@@ -1304,14 +1304,21 @@ void createTable(rc_insert *t) {
   int i;
   int PKcount = 0;
   for(i = 0; i < t->N; i++){
-    if(t->type[i] == 'S')
-  		size = atoi(t->values[i]);
+    if(t->type[i] == 'S'){
+			size = atoi(t->values[i]);
+			if (size <= 0) {
+				printf("ERROR: invalid length for type varchar(%s). Must be a positive integer.\n", t->values[i]);
+				free(tableName);
+				freeTable(tab);
+				return;
+			}
+		}
   	else if(t->type[i] == 'I')
-  		size = sizeof(int);
+			size = sizeof(int);
   	else if(t->type[i] == 'D')
-  		size = sizeof(double);
+			size = sizeof(double);
     else if(t->type[i] == 'C')
-  		size = sizeof(char);
+			size = sizeof(char);
 
     if(t->attribute[i] == PK) {
         PKcount++;

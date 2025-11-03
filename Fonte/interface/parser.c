@@ -159,6 +159,12 @@ void setColumnTypeCreate(char type){
 }
 
 void setColumnSizeCreate(char *size){
+  int n = atoi(size);
+  if (n <= 0) {
+    printf("ERROR: invalid length for type varchar(%s). Must be a positive integer.\n", size);
+    GLOBAL_PARSER.noerror = 0;
+    return;
+  }
   GLOBAL_DATA.values[GLOBAL_PARSER.col_count-1] = realloc(GLOBAL_DATA.values[GLOBAL_PARSER.col_count-1], sizeof(char)*(strlen(size)+1));
   strcpy(GLOBAL_DATA.values[GLOBAL_PARSER.col_count-1], size);
   GLOBAL_DATA.values[GLOBAL_PARSER.col_count-1][strlen(size)] = '\0';
