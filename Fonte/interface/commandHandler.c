@@ -3,12 +3,13 @@
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "../memoryContext.h"
 
 #ifndef FCOMMANDHANDLER
    #include "commandHandler.h"
 #endif
 
-char *comandos[] = {"select", "from", "where", "insert into", "values", "drop", "create", "table", "database", "index on", "int", "varchar", "char", NULL};
+char *comandos[] = {"select", "from", "where", "insert into", "values", "drop", "create", "table", "database", "index on", "int", "varchar", "char", "update", "set", NULL};
 
 
 // Função que retorna uma palavra que casa com o que foi digitado
@@ -37,7 +38,7 @@ void getComando(char * input){
     add_history(input);
     
     size_t len = strlen(input);
-    char *buffer = malloc(len + 2);  // +2 para '\n' e '\0'
+    char *buffer = uffslloc(len + 2);  // +2 para '\n' e '\0'
     
     strcpy(buffer, input);
     buffer[len] = '\n';  // Adiciona quebra de linha
@@ -46,7 +47,6 @@ void getComando(char * input){
     yyin = fmemopen(buffer, len + 1, "r");
     yyparse();
 
-    free(buffer);
     fclose(yyin);
 }
 
